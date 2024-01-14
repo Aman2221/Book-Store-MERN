@@ -8,11 +8,12 @@ const app = express();
 app.use(express.json());
 app.use("/books", router);
 app.use(
-  cors({
-    origin: "http://localhost:3000",
-    methods: ["GET", "PUT", "POST", "DELETE"],
-    allowHeaders: ["Content-Type"],
-  })
+  cors()
+  // {
+  //   origin: "http://localhost:3000",
+  //   methods: ["GET", "PUT", "POST", "DELETE"],
+  //   allowHeaders: ["Content-Type"],
+  // }
 );
 
 app.listen(PORT, () => console.log("Express Listening on", PORT));
