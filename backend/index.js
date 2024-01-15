@@ -4,17 +4,25 @@ import cors from "cors";
 import { PORT, conn_url } from "./config.js";
 import router from "./routes/index.js";
 const app = express();
+const corsOpts = {
+  origin: "*",
+  credentials: true,
+  methods: ["GET", "POST", "HEAD", "PUT", "PATCH", "DELETE"],
+  allowedHeaders: ["Content-Type"],
+  exposedHeaders: ["Content-Type"],
+};
 
+app.use(cors(corsOpts));
 app.use(express.json());
 app.use("/books", router);
-app.use(
-  cors()
-  // {
-  //   origin: "http://localhost:3000",
-  //   methods: ["GET", "PUT", "POST", "DELETE"],
-  //   allowHeaders: ["Content-Type"],
-  // }
-);
+
+// app.use(
+//   cors({
+//     origin: "http://localhost:5173",
+//     methods: ["GET", "PUT", "POST", "DELETE"],
+//     allowHeaders: ["Content-Type"],
+//   })
+// );
 
 app.listen(PORT, () => console.log("Express Listening on", PORT));
 
@@ -27,6 +35,6 @@ mongoose
   .then(() => {
     console.log("Database Connected");
   })
-  .catch(() => {
-    console.log("Error while connecting with DB");
+  .catch((e) => {
+    console.log("Error while connecting with DB", e);
   });

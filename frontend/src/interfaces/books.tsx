@@ -8,3 +8,9 @@ export interface book_interface {
   //   author: book_fields;
   //   publishYear: book_fields;
 }
+
+export interface param_interface {
+  [key: string]: any;
+}
+
+export type bool_state = (a: boolean) => void;
