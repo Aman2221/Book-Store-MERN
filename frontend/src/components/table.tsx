@@ -63,7 +63,10 @@ const BooksTable = ({ books }: { books: book_interface[] }) => {
   return (
     <div
       className={"ag-theme-quartz-dark "}
-      style={{ width: "85%", height: "80vh" }}
+      style={{
+        width: "80%",
+        height: "80vh",
+      }}
     >
       <AgGridReact rowData={books} columnDefs={colDefs} />
     </div>

@@ -14,6 +14,10 @@ export const book_shema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    email: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

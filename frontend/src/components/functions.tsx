@@ -3,6 +3,19 @@ import { bool_state, param_interface } from "../interfaces/books";
 import DeleteModal from "./modals/delete-modal";
 import { toast } from "react-toastify";
 
+export const customToast = (message: string) => {
+  return toast(message, {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+};
+
 export function EditButtonRenderer(
   params: param_interface,
   edOpen: boolean,
@@ -14,16 +27,7 @@ export function EditButtonRenderer(
       axios.post(`http://localhost:8000/books}`).then(() => {
         //code for adding book to db data
         setEdOpen(false);
-        toast("Book Deleted Successfully", {
-          position: "top-left",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        customToast("Book Updated Successfully");
       });
     }
   };
@@ -52,16 +56,7 @@ export function UpdatettonRenderer(
       axios.put(`http://localhost:8000/books/${bookId}`).then(() => {
         //code for updating book into db
         setUpOpen(false);
-        toast("Book Deleted Successfully", {
-          position: "top-left",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        customToast("Book Deleted Successfully");
       });
     }
   };
@@ -89,16 +84,7 @@ export function DeleteButtonRenderer(
     if (bookId) {
       axios.delete(`http://localhost:8000/books/${bookId}`).then(() => {
         setDeOpen(false);
-        toast("Book Deleted Successfully", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
+        customToast("Book Deleted Successfully");
       });
     }
   };
@@ -120,3 +106,11 @@ export function DeleteButtonRenderer(
     </>
   );
 }
+
+export const validateEmail = (email: string) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};

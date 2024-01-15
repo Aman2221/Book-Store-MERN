@@ -14,10 +14,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div
-      className="flex justify-center items-center"
-      style={{ height: "100vh" }}
-    >
+    <div className="flex justify-center items-center mt-14">
       <BooksTable books={books} />
       <ToastContainer />
     </div>
