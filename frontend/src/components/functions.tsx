@@ -2,6 +2,8 @@ import axios from "axios";
 import { bool_state, param_interface } from "../interfaces/books";
 import DeleteModal from "./modals/delete-modal";
 import { toast } from "react-toastify";
+import { useContext } from "react";
+import { MyContext } from "../context/MyContext";
 
 export const customToast = (message: string) => {
   return toast(message, {
@@ -77,14 +79,23 @@ export function UpdatettonRenderer(
 export function DeleteButtonRenderer(
   params: param_interface,
   deOpen: boolean,
-  setDeOpen: bool_state
+  setDeOpen: bool_state,
+  showOverlay: () => void,
+  hideOverlay: () => void
 ) {
   const bookId = params.data._id;
+  const { setBooks }: any = useContext(MyContext);
+
   const handleBookDelete = () => {
     if (bookId) {
       axios.delete(`http://localhost:8000/books/${bookId}`).then(() => {
         setDeOpen(false);
         customToast("Book Deleted Successfully");
+        showOverlay();
+        axios.get("http://localhost:8000/books").then((response) => {
+          setBooks(response.data.data);
+          hideOverlay();
+        });
       });
     }
   };

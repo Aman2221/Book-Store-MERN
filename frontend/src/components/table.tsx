@@ -1,25 +1,36 @@
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import { useState } from "react";
-import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
+import { useRef, useState, useCallback } from "react";
+import { AgGridReact } from "ag-grid-react";
 import { book_interface, param_interface } from "../interfaces/books";
 import {
   DeleteButtonRenderer,
   EditButtonRenderer,
   UpdatettonRenderer,
 } from "./functions";
+import Spinner from "./spinner";
 
 // Create new GridExample component
 const BooksTable = ({ books }: { books: book_interface[] }) => {
-  // Column Definitions: Defines & controls grid columns.
+  // Column Definitions: Defines & controls grid columns
+
+  const gridRef: any = useRef(null);
   const [edOpen, setEdOpen] = useState(false);
   const [upOpen, setUpOpen] = useState(false);
   const [deOpen, setDeOpen] = useState(false);
   const formatDate = (params: param_interface) => {
     return new Date(params.value).toLocaleDateString();
   };
+
+  const showOverlay = useCallback(() => {
+    gridRef?.current?.api?.showLoadingOverlay();
+  }, []);
+
+  const hideOverlay = useCallback(() => {
+    gridRef.current.api.hideOverlay();
+  }, []);
 
   const colDefs = [
     {
@@ -54,12 +65,17 @@ const BooksTable = ({ books }: { books: book_interface[] }) => {
     {
       headerName: "Delete",
       cellRenderer: (params: param_interface) =>
-        DeleteButtonRenderer(params, deOpen, setDeOpen),
+        DeleteButtonRenderer(
+          params,
+          deOpen,
+          setDeOpen,
+          showOverlay,
+          hideOverlay
+        ),
       colId: "delete",
     },
   ];
 
-  // Container: Defines the grid's theme & dimensions.
   return (
     <div
       className={"ag-theme-quartz-dark "}
@@ -68,7 +84,17 @@ const BooksTable = ({ books }: { books: book_interface[] }) => {
         height: "80vh",
       }}
     >
-      <AgGridReact rowData={books} columnDefs={colDefs} />
+      <AgGridReact
+        ref={gridRef}
+        rowData={books}
+        columnDefs={colDefs}
+        overlayLoadingTemplate={
+          '<span class="no-data-loader">No data found</span>'
+        }
+        overlayNoRowsTemplate={
+          "<div><button class='bg-transparant hover:bg-gray-100 text-white pointer  font-semibold py-2 px-4 border border-gray-400 rounded shadow'>No books present</button></div>"
+        }
+      />
     </div>
   );
 };

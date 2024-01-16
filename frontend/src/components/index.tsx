@@ -1,17 +1,9 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { book_interface } from "../interfaces/books";
+import { useContext } from "react";
 import BooksTable from "./table";
 import { ToastContainer } from "react-toastify";
-
+import { MyContext } from "../context/MyContext";
 const Home = () => {
-  const [books, setBooks] = useState<book_interface[]>([]);
-
-  useEffect(() => {
-    axios.get("http://localhost:8000/books").then((response) => {
-      setBooks(response.data.data);
-    });
-  }, []);
+  const { books }: any = useContext(MyContext);
 
   return (
     <div className="flex justify-center items-center mt-14">
