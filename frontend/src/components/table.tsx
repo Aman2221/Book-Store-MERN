@@ -2,38 +2,23 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import {
   book_data,
   book_interface,
   param_interface,
 } from "../interfaces/books";
-import {
-  DeleteButtonRenderer,
-  EditButtonRenderer,
-  UpdatettonRenderer,
-} from "./functions";
-// Create new GridExample component
-const BooksTable = ({ books }: { books: book_interface[] }) => {
-  // Column Definitions: Defines & controls grid columns
+import { DeleteButtonRenderer, EditButtonRenderer } from "./functions";
 
+const BooksTable = ({ books }: { books: book_interface[] }) => {
   const gridRef: any = useRef(null);
   const [edOpen, setEdOpen] = useState(false);
-  const [upOpen, setUpOpen] = useState(false);
   const [deOpen, setDeOpen] = useState(false);
   const [selected, setSelected] = useState<book_data>();
   const formatDate = (params: param_interface) => {
     return new Date(params.value).toLocaleDateString();
   };
-
-  const showOverlay = useCallback(() => {
-    gridRef?.current?.api?.showLoadingOverlay();
-  }, []);
-
-  const hideOverlay = useCallback(() => {
-    gridRef.current.api.hideOverlay();
-  }, []);
 
   const colDefs = [
     {
@@ -56,14 +41,14 @@ const BooksTable = ({ books }: { books: book_interface[] }) => {
     {
       headerName: "Edit",
       cellRenderer: (params: param_interface) =>
-        EditButtonRenderer(params, edOpen, setEdOpen),
+        EditButtonRenderer(
+          selected as any,
+          setSelected,
+          params,
+          edOpen,
+          setEdOpen
+        ),
       colId: "edit",
-    },
-    {
-      headerName: "Update",
-      cellRenderer: (params: param_interface) =>
-        UpdatettonRenderer(params, upOpen, setUpOpen),
-      colId: "update",
     },
     {
       headerName: "Delete",
@@ -83,7 +68,7 @@ const BooksTable = ({ books }: { books: book_interface[] }) => {
     <div
       className={"ag-theme-quartz-dark "}
       style={{
-        width: "80%",
+        width: "74%",
         height: "80vh",
       }}
     >

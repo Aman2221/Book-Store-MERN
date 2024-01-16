@@ -2,8 +2,9 @@ import axios from "axios";
 import { book_data, bool_state, param_interface } from "../interfaces/books";
 import DeleteModal from "./modals/delete-modal";
 import { toast } from "react-toastify";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { MyContext } from "../context/MyContext";
+import EditModal from "./modals/edit-modal";
 
 export const customToast = (message: string) => {
   return toast(message, {
@@ -19,59 +20,29 @@ export const customToast = (message: string) => {
 };
 
 export function EditButtonRenderer(
+  selected: book_data,
+  setSelected: (a: book_data) => void,
   params: param_interface,
   edOpen: boolean,
   setEdOpen: bool_state
 ) {
-  const bookId = params.data._id;
-  const handleBookEdit = () => {
-    if (bookId) {
-      axios.post(`http://localhost:8000/books}`).then(() => {
-        //code for adding book to db data
-        setEdOpen(false);
-        customToast("Book Updated Successfully");
-      });
-    }
+  const handleEditClick = () => {
+    setEdOpen(!edOpen);
+    setSelected(params.node.data);
   };
+
   return (
     <>
       <button
         style={{ width: 80 }}
-        onClick={() => setEdOpen(!edOpen)}
+        onClick={handleEditClick}
         className="bg-blue-500 hover:bg-blue-700 text-white text-sm uppercase py-2 font-semibold rounded shadow"
       >
         Edit
       </button>
-    </>
-  );
-}
-
-export function UpdatettonRenderer(
-  params: param_interface,
-  upOpen: boolean,
-  setUpOpen: bool_state
-) {
-  const bookId = params.data._id;
-
-  const handleBookUpdate = () => {
-    if (bookId) {
-      axios.put(`http://localhost:8000/books/${bookId}`).then(() => {
-        //code for updating book into db
-        setUpOpen(false);
-        customToast("Book Deleted Successfully");
-      });
-    }
-  };
-
-  return (
-    <>
-      <button
-        style={{ width: 80 }}
-        onClick={() => setUpOpen(!upOpen)}
-        className="bg-gray-300 hover:bg-gray-400 text-gray-600  text-sm uppercase py-2 font-semibold rounded shadow"
-      >
-        Update
-      </button>
+      {edOpen && (
+        <EditModal data={selected} showModal={edOpen} closeModal={setEdOpen} />
+      )}
     </>
   );
 }
@@ -97,7 +68,6 @@ export function DeleteButtonRenderer(
   const handleDeleteClick = () => {
     setDeOpen(!deOpen);
     setSelected(params.node.data);
-    console.log("params :", params.node.data);
   };
 
   return (
@@ -109,12 +79,14 @@ export function DeleteButtonRenderer(
       >
         Delete
       </button>
-      <DeleteModal
-        name={selected?.title}
-        showModal={deOpen}
-        closeModal={setDeOpen}
-        handleBookDelete={handleBookDelete}
-      />
+      {deOpen && (
+        <DeleteModal
+          name={selected?.title}
+          showModal={deOpen}
+          closeModal={setDeOpen}
+          handleBookDelete={handleBookDelete}
+        />
+      )}
     </>
   );
 }
