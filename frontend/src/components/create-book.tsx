@@ -50,9 +50,6 @@ const CreateBook = () => {
           handleSubmit={handleSubmit}
           formData={formData}
         />
-        <p className="text-center text-gray-500 text-xs">
-          &copy;2024 Aman Singh. All rights reserved.
-        </p>
       </div>
       <ToastContainer />
     </div>

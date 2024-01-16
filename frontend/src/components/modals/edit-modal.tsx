@@ -1,11 +1,19 @@
 import React, { useContext, useState } from "react";
 import { customToast, validateEmail } from "../functions";
 import axios from "axios";
-import { Fragment } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
 import { book_data } from "../../interfaces/books";
 import CreateUpdate from "../create-update";
 import { MyContext } from "../../context/MyContext";
+
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+};
 
 const EditModal = ({
   data,
@@ -56,62 +64,36 @@ const EditModal = ({
   };
 
   return (
-    <>
-      <Transition.Root show={showModal} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={() => {}}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-          </Transition.Child>
-
-          <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                enterTo="opacity-100 translate-y-0 sm:scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-              >
-                <Dialog.Panel className="relative transform overflow-hidden rounded-lg text-left transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                  <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 border">
-                    <div className="sm:flex sm:items-center">
-                      <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-                        <i className="bx bxs-edit"></i>
-                      </div>
-                      <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                        <Dialog.Title
-                          as="h3"
-                          className="text-base font-semibold leading-6 text-gray-900"
-                        >
-                          Edit book details
-                        </Dialog.Title>
-                      </div>
-                    </div>
-                  </div>
-                  <CreateUpdate
-                    formData={formData}
-                    handleSubmit={handleSubmit}
-                    handleChange={handleChange}
-                    closeModal={closeModal}
-                    isEdit={true}
-                  />
-                </Dialog.Panel>
-              </Transition.Child>
+    <Modal
+      open={showModal}
+      onClose={() => closeModal(false)}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={style}>
+        <div className="relative transform overflow-hidden rounded-lg text-left transition-all sm:my-8 sm:w-full sm:max-w-lg">
+          <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 border">
+            <div className="sm:flex sm:items-center">
+              <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                <i className="bx bxs-edit"></i>
+              </div>
+              <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                <h3 className="text-base font-semibold leading-6 text-gray-900">
+                  Edit book details
+                </h3>
+              </div>
             </div>
           </div>
-        </Dialog>
-      </Transition.Root>
-    </>
+          <CreateUpdate
+            formData={formData}
+            handleSubmit={handleSubmit}
+            handleChange={handleChange}
+            closeModal={() => closeModal(false)}
+            isEdit={true}
+          />
+        </div>
+      </Box>
+    </Modal>
   );
 };
 

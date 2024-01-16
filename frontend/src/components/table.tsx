@@ -20,6 +20,10 @@ const BooksTable = ({ books }: { books: book_interface[] }) => {
     return new Date(params.value).toLocaleDateString();
   };
 
+  const onGridReady = () => {
+    // const gridApi = gridRef.current.api;
+  };
+
   const colDefs = [
     {
       headerName: "Name",
@@ -69,13 +73,14 @@ const BooksTable = ({ books }: { books: book_interface[] }) => {
       className={"ag-theme-quartz-dark "}
       style={{
         width: "74%",
-        height: "80vh",
+        height: "60vh",
       }}
     >
       <AgGridReact
         ref={gridRef}
         rowData={books}
         columnDefs={colDefs}
+        onGridReady={onGridReady}
         overlayLoadingTemplate={
           '<span class="no-data-loader">No data found</span>'
         }

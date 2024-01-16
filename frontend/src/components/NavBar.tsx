@@ -9,7 +9,7 @@ const NavBar = () => {
             <div className="flex flex-shrink-0 items-center">
               <i
                 className="bx bxs-book-open text-sky-100"
-                style={{ fontSize: 48 }}
+                style={{ fontSize: 35 }}
               ></i>
             </div>
             <div className="hidden sm:ml-6 sm:block">
