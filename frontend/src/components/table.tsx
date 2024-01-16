@@ -4,14 +4,16 @@ import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
 import { useRef, useState, useCallback } from "react";
 import { AgGridReact } from "ag-grid-react";
-import { book_interface, param_interface } from "../interfaces/books";
+import {
+  book_data,
+  book_interface,
+  param_interface,
+} from "../interfaces/books";
 import {
   DeleteButtonRenderer,
   EditButtonRenderer,
   UpdatettonRenderer,
 } from "./functions";
-import Spinner from "./spinner";
-
 // Create new GridExample component
 const BooksTable = ({ books }: { books: book_interface[] }) => {
   // Column Definitions: Defines & controls grid columns
@@ -20,6 +22,7 @@ const BooksTable = ({ books }: { books: book_interface[] }) => {
   const [edOpen, setEdOpen] = useState(false);
   const [upOpen, setUpOpen] = useState(false);
   const [deOpen, setDeOpen] = useState(false);
+  const [selected, setSelected] = useState<book_data>();
   const formatDate = (params: param_interface) => {
     return new Date(params.value).toLocaleDateString();
   };
@@ -66,11 +69,11 @@ const BooksTable = ({ books }: { books: book_interface[] }) => {
       headerName: "Delete",
       cellRenderer: (params: param_interface) =>
         DeleteButtonRenderer(
+          selected as any,
+          setSelected,
           params,
           deOpen,
-          setDeOpen,
-          showOverlay,
-          hideOverlay
+          setDeOpen
         ),
       colId: "delete",
     },

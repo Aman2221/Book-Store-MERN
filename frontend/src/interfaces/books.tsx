@@ -4,9 +4,6 @@ type book_fields = {
 };
 export interface book_interface {
   [key: string]: book_fields;
-  //   title: book_fields;
-  //   author: book_fields;
-  //   publishYear: book_fields;
 }
 
 export interface param_interface {
@@ -14,3 +11,14 @@ export interface param_interface {
 }
 
 export type bool_state = (a: boolean) => void;
+
+export interface book_data {
+  _id: string;
+  title: string;
+  author: string;
+  publishYear: number;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: 0;
+}

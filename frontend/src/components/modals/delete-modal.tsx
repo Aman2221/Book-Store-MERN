@@ -2,10 +2,12 @@ import { Fragment, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
 const DeleteModal = ({
+  name,
   showModal,
   closeModal,
   handleBookDelete,
 }: {
+  name: string;
   showModal: boolean;
   closeModal: (a: boolean) => void;
   handleBookDelete: () => void;
@@ -55,7 +57,7 @@ const DeleteModal = ({
                           as="h3"
                           className="text-base font-semibold leading-6 text-gray-900"
                         >
-                          Book name
+                          {name}
                         </Dialog.Title>
                         <div className="mt-2">
                           <p className="text-sm text-gray-500">

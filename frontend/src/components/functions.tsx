@@ -1,8 +1,8 @@
 import axios from "axios";
-import { bool_state, param_interface } from "../interfaces/books";
+import { book_data, bool_state, param_interface } from "../interfaces/books";
 import DeleteModal from "./modals/delete-modal";
 import { toast } from "react-toastify";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { MyContext } from "../context/MyContext";
 
 export const customToast = (message: string) => {
@@ -77,39 +77,40 @@ export function UpdatettonRenderer(
 }
 
 export function DeleteButtonRenderer(
+  selected: book_data,
+  setSelected: (a: book_data) => void,
   params: param_interface,
   deOpen: boolean,
-  setDeOpen: bool_state,
-  showOverlay: () => void,
-  hideOverlay: () => void
+  setDeOpen: bool_state
 ) {
-  const bookId = params.data._id;
   const { setBooks }: any = useContext(MyContext);
-
   const handleBookDelete = () => {
-    if (bookId) {
-      axios.delete(`http://localhost:8000/books/${bookId}`).then(() => {
-        setDeOpen(false);
-        customToast("Book Deleted Successfully");
-        showOverlay();
-        axios.get("http://localhost:8000/books").then((response) => {
-          setBooks(response.data.data);
-          hideOverlay();
-        });
+    axios.delete(`http://localhost:8000/books/${selected._id}`).then(() => {
+      setDeOpen(false);
+      customToast("Book Deleted Successfully");
+      axios.get("http://localhost:8000/books").then((response) => {
+        setBooks(response.data.data);
       });
-    }
+    });
+  };
+
+  const handleDeleteClick = () => {
+    setDeOpen(!deOpen);
+    setSelected(params.node.data);
+    console.log("params :", params.node.data);
   };
 
   return (
     <>
       <button
         style={{ width: 80 }}
-        onClick={() => setDeOpen(!deOpen)}
+        onClick={handleDeleteClick}
         className="bg-red-500 hover:bg-red-600 text-sm uppercase  text-white py-2 font-semibold rounded shadow"
       >
         Delete
       </button>
       <DeleteModal
+        name={selected?.title}
         showModal={deOpen}
         closeModal={setDeOpen}
         handleBookDelete={handleBookDelete}

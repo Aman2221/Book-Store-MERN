@@ -7,18 +7,11 @@ import EditBooks from "./components/edit-book";
 import ShowBook from "./components/show-books";
 import NavBar from "./components/NavBar";
 import { MyContext } from "./context/MyContext.tsx";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { book_interface } from "./interfaces/books.tsx";
-import axios from "axios";
 
 function App() {
   const [books, setBooks] = useState<book_interface[]>([]);
-
-  useEffect(() => {
-    axios.get("http://localhost:8000/books").then((response) => {
-      setBooks(response.data.data);
-    });
-  }, []);
 
   return (
     <BrowserRouter>
