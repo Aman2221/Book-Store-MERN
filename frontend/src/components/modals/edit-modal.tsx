@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { customToast, validateEmail } from "../functions";
 import axios from "axios";
-import { Fragment, useRef } from "react";
+import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { book_data } from "../../interfaces/books";
 import CreateUpdate from "../create-update";
@@ -16,7 +16,6 @@ const EditModal = ({
   showModal: boolean;
   closeModal: (a: boolean) => void;
 }) => {
-  const cancelButtonRef = useRef(null);
   const { setBooks }: any = useContext(MyContext);
   const [formData, setFormData] = useState({
     id: data?._id ? data?._id : "",
@@ -59,7 +58,7 @@ const EditModal = ({
   return (
     <>
       <Transition.Root show={showModal} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+        <Dialog as="div" className="relative z-10" onClose={() => {}}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
