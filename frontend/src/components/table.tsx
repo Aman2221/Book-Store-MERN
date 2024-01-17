@@ -26,19 +26,24 @@ const BooksTable = ({ books }: { books: book_interface[] }) => {
 
   const colDefs = [
     {
-      headerName: "Name",
+      headerName: "Added by",
+      field: "email",
+      filter: "agTextColumnFilter",
+    },
+    {
+      headerName: "Book name",
       field: "title",
       filter: "agTextColumnFilter",
     },
     { field: "author" },
-    { headerName: "Publish Year", field: "publishYear" },
+    { headerName: "Publish year", field: "publishYear" },
     {
-      headerName: "added date",
+      headerName: "Added date",
       field: "createdAt",
       valueFormatter: formatDate,
     },
     {
-      headerName: "last updated",
+      headerName: "Last updated",
       field: "updatedAt",
       valueFormatter: formatDate,
     },
@@ -72,7 +77,7 @@ const BooksTable = ({ books }: { books: book_interface[] }) => {
     <div
       className={"ag-theme-quartz-dark "}
       style={{
-        width: "74%",
+        width: "80%",
         height: "60vh",
       }}
     >

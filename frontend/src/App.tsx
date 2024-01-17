@@ -6,6 +6,8 @@ import NavBar from "./components/NavBar";
 import { MyContext } from "./context/MyContext.tsx";
 import { useState } from "react";
 import { book_interface } from "./interfaces/books.tsx";
+import Login from "./components/login.tsx";
+import SignUp from "./components/sign-up.tsx";
 
 function App() {
   const [books, setBooks] = useState<book_interface[]>([]);
@@ -17,6 +19,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/books/create" element={<CreateBook />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/sign-up" element={<SignUp />} />
         </Routes>
       </MyContext.Provider>
     </BrowserRouter>

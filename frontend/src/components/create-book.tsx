@@ -39,6 +39,8 @@ const CreateBook = () => {
         });
         customToast("Book added sucssessfully");
       });
+    } else {
+      customToast("Please enter a valid email");
     }
   };
 

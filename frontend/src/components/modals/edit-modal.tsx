@@ -60,6 +60,8 @@ const EditModal = ({
             setBooks(response.data.data);
           });
         });
+    } else {
+      customToast("Please enter a valid email");
     }
   };
 
