@@ -9,3 +9,7 @@
 /frontend/package.json
 /frontend/.gitignore
 /frontend/README.md
+/frontend/.env
+/frontend/.env.local         
+/frontend/.env.[mode]        
+/frontend/.env.[mode].local
