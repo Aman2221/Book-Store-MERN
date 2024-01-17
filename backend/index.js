@@ -39,7 +39,6 @@ app.post("/users", async (req, res) => {
         email: req.body.email,
         password: req.body.password,
       };
-      console.log("data :", data);
       const new_user = await user_model.create(data);
       return res.status(201).send({ message: `user added to db: ${new_user}` });
     }
