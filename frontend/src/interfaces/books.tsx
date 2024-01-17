@@ -28,3 +28,7 @@ export interface user_data {
   email: string;
   password: string;
 }
+
+export interface StateProviderI {
+  children: React.ReactNode;
+}

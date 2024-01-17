@@ -3,6 +3,7 @@ import { useState } from "react";
 import { customToast, validateEmail } from "./functions";
 import { ToastContainer } from "react-toastify";
 import CreateUpdate from "./create-update";
+import NavBar from "./NavBar";
 
 const CreateBook = () => {
   const [formData, setFormData] = useState({
@@ -45,16 +46,19 @@ const CreateBook = () => {
   };
 
   return (
-    <div className="login-form mt-20">
-      <div className="w-full max-w-sm">
-        <CreateUpdate
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
-          formData={formData}
-        />
+    <>
+      <NavBar />
+      <div className="login-form mt-20">
+        <div className="w-full max-w-sm">
+          <CreateUpdate
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+            formData={formData}
+          />
+        </div>
+        <ToastContainer />
       </div>
-      <ToastContainer />
-    </div>
+    </>
   );
 };
 

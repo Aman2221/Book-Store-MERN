@@ -3,6 +3,7 @@ import BooksTable from "./table";
 import { ToastContainer } from "react-toastify";
 import { MyContext } from "../context/MyContext";
 import axios from "axios";
+import NavBar from "./NavBar";
 
 const Home = () => {
   const { books, setBooks }: any = useContext(MyContext);
@@ -14,10 +15,13 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="flex justify-center items-center mt-40">
-      <BooksTable books={books} />
-      <ToastContainer />
-    </div>
+    <>
+      <NavBar />
+      <div className="flex justify-center items-center mt-40">
+        <BooksTable books={books} />
+        <ToastContainer />
+      </div>
+    </>
   );
 };
 

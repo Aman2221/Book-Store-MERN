@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { customToast, saveUserToDb, validateEmail } from "./functions";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase/config.ts";
 import { ToastContainer } from "react-toastify";
+import { MyContext } from "../context/MyContext.tsx";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const { setValidUser }: any = useContext(MyContext);
   const [logCreds, setLogCreds] = useState({
     email: "",
     name: "",
@@ -32,13 +34,14 @@ const SignUp = () => {
         logCreds.password
       )
         .then(() => {
+          sessionStorage.setItem("isValidUser", "true");
           saveUserToDb({
             userName: logCreds.name,
             email: logCreds.email,
             password: logCreds.password,
           });
           customToast("Sign in successful");
-          navigate("/login");
+          navigate("/");
         })
         .catch((error) => {
           const errorMessage = error.message;
@@ -54,6 +57,7 @@ const SignUp = () => {
   const handleSigninWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
+        sessionStorage.setItem("isValidUser", "true");
         const user = result.user;
         saveUserToDb({
           userName: user.displayName ? user.displayName : "",
@@ -62,7 +66,8 @@ const SignUp = () => {
         });
 
         customToast("Login Successful");
-        // navigate("/");
+        setValidUser(true);
+        navigate("/");
       })
       .catch((error) => {
         // const credential = GoogleAuthProvider.credentialFromError(error);
@@ -127,7 +132,7 @@ const SignUp = () => {
           </div>
 
           <div className={"flex items-center justify-between"}>
-            <Link to="/login">
+            <Link to="/">
               <Button variant="text">Login</Button>
             </Link>
             <button

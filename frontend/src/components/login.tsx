@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { customToast, saveUserToDb, validateEmail } from "./functions";
 import { Button } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 import { auth, provider } from "../firebase/config.ts";
+import { MyContext } from "../context/MyContext.tsx";
 
 const Login = () => {
-  const navigate = useNavigate();
+  const { setValidUser }: any = useContext(MyContext);
   const [logCreds, setLogCreds] = useState({
     email: "",
     password: "",
@@ -25,6 +26,7 @@ const Login = () => {
   const handleLoginWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
+        sessionStorage.setItem("isValidUser", "true");
         const user = result.user;
         saveUserToDb({
           userName: user.displayName ? user.displayName : "",
@@ -32,7 +34,7 @@ const Login = () => {
           password: user.uid ? user.uid : "",
         });
         customToast("Login Successful");
-        navigate("/");
+        setValidUser(true);
       })
       .catch((error) => {
         // const credential = GoogleAuthProvider.credentialFromError(error);
@@ -45,8 +47,9 @@ const Login = () => {
     if (validateEmail(logCreds.email)) {
       signInWithEmailAndPassword(auth, logCreds.email, logCreds.password)
         .then(() => {
+          sessionStorage.setItem("isValidUser", "true");
           customToast("Loging successful");
-          navigate("/");
+          setValidUser(true);
         })
         .catch((error) => {
           const errorMessage = error.message;
