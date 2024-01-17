@@ -1,5 +1,10 @@
 import axios from "axios";
-import { book_data, bool_state, param_interface } from "../interfaces/books";
+import {
+  book_data,
+  bool_state,
+  param_interface,
+  user_data,
+} from "../interfaces/books";
 import DeleteModal from "./modals/delete-modal";
 import { toast } from "react-toastify";
 import { useContext } from "react";
@@ -90,6 +95,13 @@ export function DeleteButtonRenderer(
     </>
   );
 }
+
+export const saveUserToDb = (data: user_data) => {
+  console.log("saveUserToDb :", data);
+  axios.post("http://localhost:8000/users", data).then(() => {
+    console.log("User data stored into Db");
+  });
+};
 
 export const validateEmail = (email: string) => {
   return String(email)

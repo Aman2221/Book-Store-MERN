@@ -22,3 +22,9 @@ export interface book_data {
   updatedAt: string;
   __v: 0;
 }
+
+export interface user_data {
+  userName: string;
+  email: string;
+  password: string;
+}

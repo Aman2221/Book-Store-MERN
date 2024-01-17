@@ -1,13 +1,9 @@
 import { useState } from "react";
-import { customToast, validateEmail } from "./functions";
+import { customToast, saveUserToDb, validateEmail } from "./functions";
 import { Button } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import {
-  GoogleAuthProvider,
-  signInWithPopup,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 import { auth, provider } from "../firebase/config.ts";
 
 const Login = () => {
@@ -29,8 +25,12 @@ const Login = () => {
   const handleLoginWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
         const user = result.user;
+        saveUserToDb({
+          userName: user.displayName ? user.displayName : "",
+          email: user.email ? user.email : "",
+          password: user.uid ? user.uid : "",
+        });
         customToast("Login Successful");
         navigate("/");
       })
@@ -44,8 +44,7 @@ const Login = () => {
     e.preventDefault();
     if (validateEmail(logCreds.email)) {
       signInWithEmailAndPassword(auth, logCreds.email, logCreds.password)
-        .then((userCredential) => {
-          const user = userCredential.user;
+        .then(() => {
           customToast("Loging successful");
           navigate("/");
         })

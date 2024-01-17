@@ -1,12 +1,8 @@
 import React, { useState } from "react";
-import { customToast, validateEmail } from "./functions";
+import { customToast, saveUserToDb, validateEmail } from "./functions";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
-import {
-  GoogleAuthProvider,
-  createUserWithEmailAndPassword,
-  signInWithPopup,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase/config.ts";
 import { ToastContainer } from "react-toastify";
 
@@ -35,8 +31,12 @@ const SignUp = () => {
         logCreds.email,
         logCreds.password
       )
-        .then((userCredential) => {
-          const user = userCredential.user;
+        .then(() => {
+          saveUserToDb({
+            userName: logCreds.name,
+            email: logCreds.email,
+            password: logCreds.password,
+          });
           customToast("Sign in successful");
           navigate("/login");
         })
@@ -54,12 +54,15 @@ const SignUp = () => {
   const handleSigninWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-
-        // The signed-in user info.
         const user = result.user;
+        saveUserToDb({
+          userName: user.displayName ? user.displayName : "",
+          email: user.email ? user.email : "",
+          password: user.uid ? user.uid : "",
+        });
+
         customToast("Login Successful");
-        navigate("/");
+        // navigate("/");
       })
       .catch((error) => {
         // const credential = GoogleAuthProvider.credentialFromError(error);
